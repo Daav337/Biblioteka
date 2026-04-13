@@ -3,9 +3,11 @@ using Biblioteka.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization; 
 
 namespace Biblioteka.Controllers
 {
+    [Authorize]
     public class BooksController : Controller
     {
         private readonly LibraryContext _context;
@@ -16,6 +18,7 @@ namespace Biblioteka.Controllers
         }
 
         // GET: /Books  (z filtrowaniem)
+        [AllowAnonymous]
         public async Task<IActionResult> Index(int? authorId, int? genreId, string? searchTitle)
         {
             var books = _context.Books
@@ -48,6 +51,7 @@ namespace Biblioteka.Controllers
         }
 
         // GET: /Books/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();

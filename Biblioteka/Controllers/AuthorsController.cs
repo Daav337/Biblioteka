@@ -2,9 +2,11 @@
 using Biblioteka.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;   
 
 namespace Biblioteka.Controllers
 {
+    [Authorize]
     public class AuthorsController : Controller
     {
         private readonly LibraryContext _context;
@@ -15,6 +17,7 @@ namespace Biblioteka.Controllers
         }
 
         // GET: /Authors
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string? searchName)
         {
             var authors = _context.Authors.Include(a => a.Books).AsQueryable();
@@ -29,6 +32,7 @@ namespace Biblioteka.Controllers
         }
 
         // GET: /Authors/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();

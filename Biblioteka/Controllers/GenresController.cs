@@ -2,9 +2,11 @@
 using Biblioteka.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;   
 
 namespace Biblioteka.Controllers
 {
+    [Authorize]
     public class GenresController : Controller
     {
         private readonly LibraryContext _context;
@@ -15,6 +17,7 @@ namespace Biblioteka.Controllers
         }
 
         // GET: /Genres
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var genres = await _context.Genres

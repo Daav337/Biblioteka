@@ -4,6 +4,14 @@
     ViewData["Title"] = "Strona główna";
 }
 
+@if (!User.Identity?.IsAuthenticated == true)
+{
+    <div class="alert alert-info">
+        📖 Przeglądasz bibliotekę jako gość.
+        <a asp-controller="Account" asp-action="Login">Zaloguj się</a>, aby dodawać i edytować książki.
+    </div>
+}
+
 @if (TempData["Success"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show">

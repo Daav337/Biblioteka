@@ -1,0 +1,48 @@
+﻿@model Biblioteka.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Logowanie";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">🔐 Logowanie </h4>
+            </div>
+            <div class="card-body">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success">@TempData["Success"]</div>
+                }
+
+                <form asp-action="Login" method="post">
+                    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Username" class="form-label"></label>
+                        <input asp-for="Username" class="form-control" autofocus />
+                        <span asp-validation-for="Username" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4 form-check">
+                        <input asp-for="RememberMe" class="form-check-input" />
+                        <label asp-for="RememberMe" class="form-check-label">Zapamiętaj mnie na 30 dni</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark w-100">Zaloguj się</button>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                Nie masz konta? <a asp-action="Register">Zarejestruj się</a>
+            </div>
+        </div>
+    </div>
+</div>
