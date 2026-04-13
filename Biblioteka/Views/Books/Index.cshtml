@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Biblioteka.Models.Book>
+
+@{
+    ViewData["Title"] = "Książki";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<h1>Katalog książek</h1>
+<hr />
+
+@* Panel filtrowania *@
+<div class="card mb-4">
+    <div class="card-body">
+        <h6 class="card-title mb-3">🔍 Filtruj</h6>
+        <form method="get" asp-action="Index" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Tytuł</label>
+                <input type="text" name="searchTitle" value="@ViewBag.SearchTitle"
+                       class="form-control" placeholder="Szukaj po tytule..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Autor</label>
+                <select name="authorId" class="form-select" asp-items="ViewBag.Authors">
+                    <option value="">-- Wszyscy autorzy --</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Gatunek</label>
+                <select name="genreId" class="form-select" asp-items="ViewBag.Genres">
+                    <option value="">-- Wszystkie gatunki --</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary">Szukaj</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-success">+ Dodaj książkę</a>
+    <span class="ms-3 text-muted">Znaleziono: @Model.Count() książek</span>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Brak książek spełniających kryteria wyszukiwania.</div>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Tytuł</th>
+                <th>Autor</th>
+                <th>Rok</th>
+                <th>ISBN</th>
+                <th>Gatunki</th>
+                <th class="text-end">Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td><strong>@book.Title</strong></td>
+                    <td>@book.Author?.FullName</td>
+                    <td>@(book.PublishedYear?.ToString() ?? "–")</td>
+                    <td>
+                        <span class="text-muted small">
+                            @(string.IsNullOrEmpty(book.ISBN) ? "–" : book.ISBN)
+                        </span>
+                    </td>
+                    <td>
+                        @foreach (var g in book.Genres)
+                        {
+                            <span class="badge bg-secondary me-1">@g.Name</span>
+                        }
+                    </td>
+                    <td class="text-end">
+                        <a asp-action="Details" asp-route-id="@book.Id"
+                           class="btn btn-sm btn-info">Szczegóły</a>
+                        <a asp-action="Edit" asp-route-id="@book.Id"
+                           class="btn btn-sm btn-warning">Edytuj</a>
+                        <a asp-action="Delete" asp-route-id="@book.Id"
+                           class="btn btn-sm btn-danger">Usuń</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

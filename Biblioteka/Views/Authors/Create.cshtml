@@ -1,0 +1,40 @@
+﻿@model Biblioteka.Models.Author
+
+@{
+    ViewData["Title"] = "Dodaj autora";
+}
+
+<h1>Dodaj nowego autora</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="FirstName" class="form-label"></label>
+                <input asp-for="FirstName" class="form-control" placeholder="Jan" />
+                <span asp-validation-for="FirstName" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="LastName" class="form-label"></label>
+                <input asp-for="LastName" class="form-control" placeholder="Kowalski" />
+                <span asp-validation-for="LastName" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Bio" class="form-label"></label>
+                <textarea asp-for="Bio" class="form-control" rows="4"
+                          placeholder="Krótki opis autora..."></textarea>
+                <span asp-validation-for="Bio" class="text-danger small"></span>
+            </div>
+
+            <div class="d-flex gap-2">
+                <input type="submit" value="Dodaj autora" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+            </div>
+        </form>
+    </div>
+</div>

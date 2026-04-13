@@ -1,0 +1,44 @@
+﻿@model Biblioteka.Models.Author
+
+@{
+    ViewData["Title"] = "Szczegóły autora";
+}
+
+<h1>@Model.FullName</h1>
+<hr />
+
+<dl class="row mb-4">
+    <dt class="col-sm-3">Imię</dt>
+    <dd class="col-sm-9">@Model.FirstName</dd>
+
+    <dt class="col-sm-3">Nazwisko</dt>
+    <dd class="col-sm-9">@Model.LastName</dd>
+
+    <dt class="col-sm-3">Biografia</dt>
+    <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Bio) ? "Brak" : Model.Bio)</dd>
+</dl>
+
+<h5>Książki autora (@Model.Books.Count)</h5>
+
+@if (Model.Books.Any())
+{
+    <ul class="list-group mb-4">
+        @foreach (var book in Model.Books)
+        {
+            <li class="list-group-item d-flex justify-content-between">
+                @book.Title
+                <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id"
+                   class="btn btn-sm btn-outline-info">Szczegóły</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p class="text-muted">Ten autor nie ma jeszcze żadnych książek.</p>
+}
+
+<div class="d-flex gap-2">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edytuj</a>
+    <a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>
+</div>

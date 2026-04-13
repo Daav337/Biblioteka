@@ -1,0 +1,43 @@
+﻿@model Biblioteka.Models.Author
+
+@{
+    ViewData["Title"] = "Usuń autora";
+}
+
+<h1>Usuń autora</h1>
+<hr />
+
+<div class="alert alert-danger">
+    <h5>⚠️ Czy na pewno chcesz usunąć tego autora?</h5>
+    <p class="mb-0">Tej operacji nie można cofnąć.</p>
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Imię i nazwisko</dt>
+    <dd class="col-sm-9"><strong>@Model.FullName</strong></dd>
+
+    <dt class="col-sm-3">Biografia</dt>
+    <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.Bio) ? "Brak" : Model.Bio)</dd>
+
+    <dt class="col-sm-3">Liczba książek</dt>
+    <dd class="col-sm-9">@Model.Books.Count</dd>
+</dl>
+
+@if (Model.Books.Any())
+{
+    <div class="alert alert-warning">
+        Nie można usunąć autora – ma @Model.Books.Count przypisaną/e książkę/i.
+        Najpierw usuń lub przepisz książki do innego autora.
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">Powrót</a>
+}
+else
+{
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="d-flex gap-2">
+            <input type="submit" value="Tak, usuń autora" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+        </div>
+    </form>
+}

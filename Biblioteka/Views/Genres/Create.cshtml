@@ -1,0 +1,27 @@
+﻿@model Biblioteka.Models.Genre
+
+@{
+    ViewData["Title"] = "Dodaj gatunek";
+}
+
+<h1>Dodaj gatunek</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="np. Fantastyka" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+
+            <div class="d-flex gap-2">
+                <input type="submit" value="Dodaj" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+            </div>
+        </form>
+    </div>
+</div>

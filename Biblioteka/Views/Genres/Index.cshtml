@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Biblioteka.Models.Genre>
+
+@{
+    ViewData["Title"] = "Gatunki";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Gatunki literackie</h1>
+    <a asp-action="Create" class="btn btn-success">+ Dodaj gatunek</a>
+</div>
+<hr />
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Brak gatunków w bazie.</div>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Nazwa gatunku</th>
+                <th>Liczba książek</th>
+                <th class="text-end">Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var genre in Model)
+            {
+                <tr>
+                    <td><strong>@genre.Name</strong></td>
+                    <td>
+                        <span class="badge bg-primary">@genre.Books.Count</span>
+                    </td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@genre.Id"
+                           class="btn btn-sm btn-warning">Edytuj</a>
+                        <a asp-action="Delete" asp-route-id="@genre.Id"
+                           class="btn btn-sm btn-danger">Usuń</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

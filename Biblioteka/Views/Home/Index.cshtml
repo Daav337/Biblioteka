@@ -1,8 +1,89 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Biblioteka.Models.Book>
+
+@{
+    ViewData["Title"] = "Strona główna";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="p-4 mb-4 bg-light rounded-3 border">
+    <h1 class="display-6">📚 Biblioteka</h1>
+    <p class="lead mb-0">System zarządzania zbiorami bibliotecznymi</p>
 </div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h2 class="text-primary fw-bold">@ViewBag.BookCount</h2>
+                <p class="card-text text-muted">Książek w bibliotece</p>
+                <a asp-controller="Books" asp-action="Index" class="btn btn-primary">
+                    Przeglądaj książki
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h2 class="text-success fw-bold">@ViewBag.AuthorCount</h2>
+                <p class="card-text text-muted">Autorów</p>
+                <a asp-controller="Authors" asp-action="Index" class="btn btn-success">
+                    Przeglądaj autorów
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h2 class="text-warning fw-bold">@ViewBag.GenreCount</h2>
+                <p class="card-text text-muted">Gatunków literackich</p>
+                <a asp-controller="Genres" asp-action="Index" class="btn btn-warning">
+                    Przeglądaj gatunki
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h5>Ostatnio dodane książki</h5>
+<hr />
+
+@if (!Model.Any())
+{
+    <p class="text-muted">Brak książek w bibliotece. 
+        <a asp-controller="Books" asp-action="Create">Dodaj pierwszą</a>.
+    </p>
+}
+else
+{
+    @foreach (var book in Model)
+    {
+        <div class="card mb-2">
+            <div class="card-body py-2 d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>@book.Title</strong>
+                    <span class="text-muted ms-2">– @book.Author?.FullName</span>
+                    @if (book.Genres.Any())
+                    {
+                        <span class="ms-2">
+                            @foreach (var g in book.Genres)
+                            {
+                                <span class="badge bg-secondary me-1">@g.Name</span>
+                            }
+                        </span>
+                    }
+                </div>
+                <a asp-controller="Books" asp-action="Details" asp-route-id="@book.Id"
+                   class="btn btn-sm btn-outline-primary">Szczegóły</a>
+            </div>
+        </div>
+    }
+}

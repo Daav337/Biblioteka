@@ -1,0 +1,44 @@
+﻿@model Biblioteka.Models.Book
+
+@{
+    ViewData["Title"] = "Usuń książkę";
+}
+
+<h1>Usuń książkę</h1>
+<hr />
+
+<div class="alert alert-danger">
+    <h5>⚠️ Czy na pewno chcesz usunąć tę książkę?</h5>
+    <p class="mb-0">Tej operacji nie można cofnąć.</p>
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Tytuł</dt>
+    <dd class="col-sm-9"><strong>@Model.Title</strong></dd>
+
+    <dt class="col-sm-3">Autor</dt>
+    <dd class="col-sm-9">@Model.Author?.FullName</dd>
+
+    <dt class="col-sm-3">Rok wydania</dt>
+    <dd class="col-sm-9">@(Model.PublishedYear?.ToString() ?? "–")</dd>
+
+    <dt class="col-sm-3">Gatunki</dt>
+    <dd class="col-sm-9">
+        @if (Model.Genres.Any())
+        {
+            @string.Join(", ", Model.Genres.Select(g => g.Name))
+        }
+        else
+        {
+            <span class="text-muted">Brak</span>
+        }
+    </dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="d-flex gap-2">
+        <input type="submit" value="Tak, usuń książkę" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+    </div>
+</form>

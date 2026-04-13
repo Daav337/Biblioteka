@@ -1,0 +1,45 @@
+﻿@model Biblioteka.Models.Book
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<h1>@Model.Title</h1>
+<hr />
+
+<dl class="row mb-4">
+    <dt class="col-sm-3">Autor</dt>
+    <dd class="col-sm-9">
+        <a asp-controller="Authors" asp-action="Details"
+           asp-route-id="@Model.AuthorId">
+            @Model.Author?.FullName
+        </a>
+    </dd>
+
+    <dt class="col-sm-3">ISBN</dt>
+    <dd class="col-sm-9">@(string.IsNullOrEmpty(Model.ISBN) ? "–" : Model.ISBN)</dd>
+
+    <dt class="col-sm-3">Rok wydania</dt>
+    <dd class="col-sm-9">@(Model.PublishedYear?.ToString() ?? "–")</dd>
+
+    <dt class="col-sm-3">Gatunki</dt>
+    <dd class="col-sm-9">
+        @if (Model.Genres.Any())
+        {
+            @foreach (var g in Model.Genres)
+            {
+                <span class="badge bg-secondary me-1">@g.Name</span>
+            }
+        }
+        else
+        {
+            <span class="text-muted">Brak przypisanych gatunków</span>
+        }
+    </dd>
+</dl>
+
+<div class="d-flex gap-2">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edytuj</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Usuń</a>
+    <a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>
+</div>
